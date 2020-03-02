@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# give OpenHAB permissions to use Bluetooth
+usermod -aG bluetooth openhab
+
+# resetting the Bluetooth chip
+/opt/vc/bin/vcmailbox 0x38041 8 8 128 0
+sleep 1
+
+/opt/vc/bin/vcmailbox 0x38041 8 8 128 1
+sleep 1
+
+# initializing the Bluetooth chip
+hciattach /dev/ttyAMA0 bcm43xx 921600
+
+# startup of dbus and Bluetooth stack
+/etc/init.d/dbus start
+/etc/init.d/bluetooth start
