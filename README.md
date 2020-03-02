@@ -22,8 +22,8 @@ correct value to avoid hardware failures.**
 - `--device=/dev/vcio`: This maps the video chip to the container. This is required for proper bluetooth chip resets as 
 done by the `vcmailbox` binary.
 - `-v /etc/firmware/:/etc/firmware/:ro`: Provides the host's firmware to the container. In some cases the firmware on 
-the host is located at `/lib/firmware`. If this applies to you, either adapt the mapping, or create a symlink with 
-`ln -s /lib/firmware /etc/firmware`.
+the host is located at `/lib/firmware/`. If this applies to you, either adapt the mapping, or create a symlink with 
+`ln -s /lib/firmware/ /etc/firmware`.
 
 A sample Docker run command for a Raspberry Pi 4B looks as follows:
 ```
