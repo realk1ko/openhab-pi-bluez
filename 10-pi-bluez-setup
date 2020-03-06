@@ -15,15 +15,15 @@ if ! dpkg -s bluez > /dev/null 2>&1; then
     # (https://github.com/openhab/openhab-addons/issues/5680)
     echo "Downloading tinyb libraries..."
     JAVA_LIB_DIR="${JAVA_HOME}/jre/lib/aarch32"
+    PERM_REF_FILE=$(ls $JAVA_LIB_DIR | head -n 1)
     curl -kL https://github.com/openhab/openhab-addons/raw/2.5.x/bundles/org.openhab.binding.bluetooth.bluez/src/main/resources/lib/armv6hf/libjavatinyb.so \
       -o "${JAVA_LIB_DIR}/libjavatinyb.so"
     curl -kL https://github.com/openhab/openhab-addons/raw/2.5.x/bundles/org.openhab.binding.bluetooth.bluez/src/main/resources/lib/armv6hf/libtinyb.so \
       -o "${JAVA_LIB_DIR}libtinyb.so"
 
-    PERM_REF_FILE=$(ls $JAVA_LIB_DIR | head -n 1)
     echo "Setting tinyb permissions using '${PERM_REF_FILE}' as reference..."
-    chmod --reference $PERM_REF_FILE .
-    chown --reference $PERM_REF_FILE .
+    chmod --reference "${JAVA_LIB_DIR}/${PERM_REF_FILE}" "${JAVA_LIB_DIR}/*"
+    chown --reference "${JAVA_LIB_DIR}/${PERM_REF_FILE}" "${JAVA_LIB_DIR}/*"
 
     # give openHAB permission to use Bluetooth
     echo "Adding openHAB user to bluetooth group..."
