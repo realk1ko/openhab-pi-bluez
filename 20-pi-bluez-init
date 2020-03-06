@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if dpkg -s bluez > /dev/null 2>&1; then
+    echo "Resetting bluetooth chip..."
+    /opt/vc/bin/vcmailbox 0x38041 8 8 128 0
+    sleep 1
+    /opt/vc/bin/vcmailbox 0x38041 8 8 128 1
+    sleep 1
+
+    echo "Initializing bluetooth chip..."
+    hciattach /dev/ttyAMA0 bcm43xx 921600
+
+    echo "Starting dbus and bluetooth stack..."
+    /etc/init.d/dbus start
+    /etc/init.d/bluetooth start
+else
+    echo "BlueZ is not installed! Skipped bluetooth chip initialization!"
+fi
+
