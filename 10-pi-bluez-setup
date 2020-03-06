@@ -14,14 +14,14 @@ if ! dpkg -s bluez > /dev/null 2>&1; then
 
     # (https://github.com/openhab/openhab-addons/issues/5680)
     echo "Downloading tinyb libraries..."
-    cd "${JAVA_HOME}/jre/lib/aarch32/"
+    JAVA_LIB_DIR="${JAVA_HOME}/jre/lib/aarch32"
     curl -kL https://github.com/openhab/openhab-addons/raw/2.5.x/bundles/org.openhab.binding.bluetooth.bluez/src/main/resources/lib/armv6hf/libjavatinyb.so \
-      -o libjavatinyb.so
+      -o "${JAVA_LIB_DIR}/libjavatinyb.so"
     curl -kL https://github.com/openhab/openhab-addons/raw/2.5.x/bundles/org.openhab.binding.bluetooth.bluez/src/main/resources/lib/armv6hf/libtinyb.so \
-      -o libtinyb.so
+      -o "${JAVA_LIB_DIR}libtinyb.so"
 
-    PERM_REF_FILE=$(ls | head -n 1)
-    echo "Setting tinyb permissions using '$PERM_REF_FILE' as reference..."
+    PERM_REF_FILE=$(ls $JAVA_LIB_DIR | head -n 1)
+    echo "Setting tinyb permissions using '${PERM_REF_FILE}' as reference..."
     chmod --reference $PERM_REF_FILE .
     chown --reference $PERM_REF_FILE .
 
